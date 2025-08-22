@@ -213,7 +213,7 @@ section {
   min-height: 100vh;
   max-height: 100vh;
   color: #9fa0ac;
-  background: url("../img/bcc-free-template-rock-hard.jpg");
+  background: url("../img/FotoPrincipal.jpg");
   background-size: cover;
   background-position: center;
   background-color: transparent;
@@ -678,12 +678,14 @@ button[name=backSite] {
   opacity: 0;
   transform: translate3d(0, 3vh, 0);
   transition: all ease-in-out 1s;
+   font-size: 2.2rem;
 }
 
 .animatableX {
   opacity: 0;
   transform: translate3d(-3vw, 0, 0);
   transition: all ease-in-out 1s;
+   font-size: 2.5rem;
 }
 
 .animatableOpacity {
