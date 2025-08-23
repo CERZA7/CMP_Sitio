@@ -2,6 +2,9 @@ html {
   scroll-behavior: smooth;
 }
 
+.rellax{
+  font-size: 70px;
+}
 *, ::before, ::after {
   box-sizing: border-box;
   padding: 0;
@@ -367,6 +370,8 @@ p.miniPara {
   position: relative;
   width: 100%;
   max-width: 250px;
+  height: 350px;       /* 👈 altura fija para todas */
+  object-fit: cover; 
   margin: 15px auto;
   border-radius: 15px;
 }
@@ -381,6 +386,18 @@ p.miniTitle {
   margin: 0;
   margin-bottom: 20px;
 }
+
+.audioPlayer p {
+  margin-top: 5%;   /* antes podría ser 20px o más */
+  margin-bottom: 5%;
+  font-size: 2rem;   /* opcional, ajusta el tamaño del texto */
+}
+
+.audioPlayer audio {
+  display: block;    /* evita que quede inline y genere espacio raro */
+  margin: 0 auto 10px auto; /* ajusta arriba, abajo y centra */
+}
+
 
 p.pink {
   color: #F4591E;
@@ -402,7 +419,7 @@ p.pink:hover {
 }
 
 .date table {
-  margin: 70px 0;
+  margin: 50px 0;
   width: 100%;
   border-spacing: 0;
 }
@@ -619,11 +636,38 @@ footer img {
   align-items: center;
 }
 .footerBaner .bandBanner {
-  margin: 0 30px;
+  margin: 0 15px;
   width: 100%;
-  max-width: 75px;
+  max-width: 95px;
   cursor: default;
+  border-radius: 180px;
 }
+/*Listaacanciones*/
+.songsButtons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  margin: 30px;
+}
+
+.songBtn {
+  padding: 15px 35px;
+  background-color: #F4591E;
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 999px;
+  transition: all 0.3s ease-in-out;
+}
+
+.songBtn:hover {
+  background-color: white;
+  color: #F4591E;
+  transform: translateY(-3px);
+}
+
 
 #upArrow {
   display: none;
@@ -699,6 +743,7 @@ button[name=backSite] {
   transition: all ease-in-out 1s;
 }
 
+/* Para tablets grandes y pantallas medianas */
 @media screen and (max-width: 1024px) {
   .menu:hover .line1 {
     transform: scaleX(0.5);
@@ -711,7 +756,34 @@ button[name=backSite] {
   .menu.active .line3 {
     transform: scaleX(1);
   }
+
+  .imgContent {
+    width: 90%;
+    justify-content: center;
+  }
+
+  .imgContent .card {
+    flex: 1 1 48%;
+    max-width: 48%;
+    margin: 10px 0;
+  }
+
+  .imgContent .card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  form.newsletterForm input[type=email] {
+    width: 60%;
+  }
+
+  .contactForm input, .contactForm textarea {
+    width: 90%;
+  }
 }
+
+/* Para móviles medianos (menos de 767px) */
 @media screen and (max-width: 767px) {
   h1 {
     width: 90%;
@@ -725,23 +797,14 @@ button[name=backSite] {
     bottom: 20%;
   }
 
-  .shareBtn {
-    display: none;
-  }
-
+  .shareBtn,
   footer .socialBanner {
     display: none;
   }
 
-  section {
-    padding: 50px 2% 50px 2%;
-  }
-
+  section,
   section.blocNewsletter {
-    padding: 50px 2% 50px 2%;
-    background-size: 160%;
-    background-repeat: no-repeat;
-    background-position: 100% 20%;
+    padding: 50px 2%;
   }
 
   form.newsletterForm input[type=email] {
@@ -756,7 +819,8 @@ button[name=backSite] {
     max-width: 100%;
   }
 
-  .contactForm input, .contactForm textarea {
+  .contactForm input,
+  .contactForm textarea {
     width: 90%;
   }
 
@@ -764,65 +828,166 @@ button[name=backSite] {
     display: none;
   }
 
-  p.pink:hover {
-    transform: none;
+  .imgContent {
+    width: 100%;
+    justify-content: center;
   }
 
-  .date table td a:hover {
-    transform: none;
+  .imgContent .card {
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin: 10px 0;
   }
 
-  form.newsletterForm input[type=submit]:hover {
-    transform: none;
-  }
-
-  .contactForm input[type=submit]:hover {
-    transform: none;
-    letter-spacing: 0.2rem;
-    color: #1A1B1D;
-    background-color: white;
-  }
-
-  #upArrow {
-    width: 48px;
-  }
-  #upArrow:hover {
-    -webkit-animation: none;
-    animation: none;
-  }
-
-  .date table td:nth-of-type(even) {
-    padding-left: 1px;
+  .imgContent .card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
   }
 }
-@media all and (min-width: 768px) and (max-width: 1024px) {
-  form.newsletterForm input[type=email] {
-    width: 60%;
+
+/* Para móviles pequeños (menos de 430px) */
+@media screen and (max-width: 430px) {
+  .imgContent {
+    width: 100%;
+    justify-content: center;
   }
 
-  .contactForm input, .contactForm textarea {
+  .imgContent .card {
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin: 5px 0;
+  }
+
+  .imgContent .card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}
+
+/* Para móviles muy pequeños (menos de 380px) */
+@media screen and (max-width: 380px) {
+  h1 {
+    font-size: 4vh;
+    width: 95%;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 30%;
+    text-align: center;
+  }
+
+  h2#slogan {
+    font-size: 3.5vh;
+    width: 95%;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 12%;
+    text-align: center;
+  }
+
+  section, section.blocNewsletter {
+    padding: 30px 2%;
+  }
+
+  .hardLight {
+    width: 95%;
+    font-size: 2.5vh;
+    margin: 50px auto;
+  }
+
+  .imgContent {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
+
+  .imgContent .card {
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin: 5px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .imgContent .card img {
+    width: 90%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .contactForm input,
+  .contactForm textarea {
+    width: 90%;
+  }
+
+  form.newsletterForm input[type=email] {
     width: 90%;
   }
 }
-@media all and (max-width: 320px) {
-  table {
-    font-size: 0.8rem;
+
+/* Para móviles extremadamente pequeños (menos de 370px) */
+@media screen and (max-width: 350px) {
+  h1 {
+    font-size: 3.7vh;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 30%;
+    text-align: center;
   }
-  table td:last-of-type {
-    display: none;
+
+
+  h2#slogan {
+    font-size: 3vh;
+    bottom: 10%;
+  }
+
+  .hardLight {
+    font-size: 2.2vh;
+    margin: 40px auto;
+  }
+
+  section, section.blocNewsletter {
+    padding: 25px 2%;
+  }
+
+  .imgContent .card img {
+    width: 85%;
+    height: auto;
+  }
+}
+
+/* Para móviles muy extremos (menos de 320px) */
+@media screen and (max-width: 320px) {
+  h1 {
+    font-size: 3vh;
+    bottom: 25%;
+  }
+
+  h2#slogan {
+    font-size: 2.5vh;
+    bottom: 8%;
   }
 
   .hardLight {
     font-size: 2vh;
+    margin: 35px auto;
   }
 
   form.newsletterForm input[type=email] {
-    width: 50%;
+    width: 85%;
   }
 
-  .footerBaner p.bolder {
-    font-size: 0.8rem;
+  .contactForm input,
+  .contactForm textarea {
+    width: 85%;
+  }
+
+  .imgContent .card img {
+    width: 80%;
+    height: auto;
   }
 }
-
-/*# sourceMappingURL=style.css.map */
