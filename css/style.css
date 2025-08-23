@@ -3,7 +3,7 @@ html {
 }
 
 .rellax{
-  font-size: 70px;
+  font-size: 50px;
 }
 *, ::before, ::after {
   box-sizing: border-box;
@@ -215,6 +215,7 @@ section {
   position: relative;
   min-height: 100vh;
   max-height: 100vh;
+  width: 100vw;
   color: #9fa0ac;
   background: url("../img/FotoPrincipal.jpg");
   background-size: cover;
