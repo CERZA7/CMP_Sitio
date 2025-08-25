@@ -335,6 +335,8 @@ p.miniPara {
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
+  position: relative; /* 👈 esto es clave */
+  overflow: hidden;   /* opcional: para que el ::before no se salga de la tarjeta */
 }
 .imgContent .card p {
   text-align: center;
@@ -357,12 +359,20 @@ p.miniPara {
   margin: 15px auto;
   width: 100%;
   max-width: 250px;
-  height: 250px;
+  height: 80%;
   opacity: 0;
   background-color: rgba(244, 89, 30, 0.7);
   z-index: 2;
   transition: all ease-in-out 150ms;
 }
+.card.social-instagram::before {
+  content: url("../img/instagram-min-white.svg");
+}
+
+.card.social-facebook::before {
+  content: url("../img/facebook-white.svg"); 
+}
+
 .imgContent .card:hover::before {
   opacity: 1;
   transition: all ease-in-out 150ms;
@@ -826,7 +836,22 @@ button[name=backSite] {
   }
 
   .imgContent .card::before {
-    display: none;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    content: ""; /* Esto es importante para pseudo-elemento vacío */
+    border-radius: 15px;
+    background-color: rgba(244, 89, 30, 0.7);
+    justify-content: center;
+    align-items: center;
+    transition: all ease-in-out 150ms;
+  }
+
+  .imgContent .card:hover::before {
+    opacity: 1;
   }
 
   .imgContent {

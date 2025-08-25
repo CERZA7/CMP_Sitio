@@ -3,17 +3,11 @@
 <p align="center">
   <img width="500" height="283" src="./img/CompañiaP.avif" alt="Vista en escritorio">
 </p>
-<p align="center">
-  <img width="300" height="500" src="./img/CompañiaP.avif" alt="Vista en móvil">
-</p>
-<p align="center">
-  <img width="300" height="500" src="./img/CompañiaP.avif" alt="Menú móvil">
-</p>
 
-## :free: Plantilla gratuita para tu banda de rock  
+## :check: Pagina Web Compañía  
 
-Este proyecto es una **plantilla web sencilla y responsiva** diseñada para bandas de música 🎶.  
-Puedes personalizarla fácilmente para mostrar:  
+Este proyecto es una **pagina web sencilla y responsiva** diseñada por la banda musical 🎶.  
+Muestra campos personalizados facil de visializar como:  
 - Nombre de tu banda  
 - Fotos e imágenes  
 - Videos y clips musicales  
