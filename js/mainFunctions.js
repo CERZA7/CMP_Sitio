@@ -347,3 +347,16 @@ $(function () {
     window.location.href = "https://www.instagram.com/";
   });
 });
+
+// Ajustar altura de secciones para móviles
+function ajustarAlturaSecciones() {
+  const altura = window.innerHeight * 0.7 + "px";
+  document.querySelectorAll(".ss-nextShow, .ss-music").forEach(el => {
+    el.style.height = altura;
+  });
+}
+
+// Ejecutar al cargar y al cambiar tamaño
+window.addEventListener("load", ajustarAlturaSecciones);
+window.addEventListener("resize", ajustarAlturaSecciones);
+
