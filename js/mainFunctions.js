@@ -313,10 +313,11 @@ $(function () {
 
 // Locations
 $(function () {
-  $(".card").on('click', function() {
+  $(".card").on('click', function(event) {
+    event.stopPropagation(); // previene que otros clics afecten
     const link = $(this).data('link');
     if (link) {
-      window.open(link, "_blank");
+      window.open(link, "_blank"); // abre en nueva pestaña
     }
   });
 });
