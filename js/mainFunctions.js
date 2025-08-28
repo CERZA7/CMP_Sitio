@@ -313,8 +313,14 @@ $(function () {
 
 // Locations
 $(function () {
-    $(".card").on('click', () => {window.location.href = "https://www.instagram.com/"});
-})
+  $(".card").on('click', function() {
+    const link = $(this).data('link');
+    if (link) {
+      window.open(link, "_blank");
+    }
+  });
+});
+
 // Location socials
 $(function () {
     $('.facebook').on('click', function(event) {
