@@ -17,6 +17,7 @@ $(function () {
     }
   });
 });
+
 $(function () {
   $(".ss-menu").on("click", function () {
     $(".menu").removeClass("active");
@@ -27,6 +28,7 @@ $(function () {
     $(".ss-menu5").removeClass("visible5");
   });
 });
+
 $(function () {
   $(window).on("scroll", function () {
     if ($(".menu").hasClass("active")) {
@@ -273,37 +275,43 @@ $(function () {
   }
 });
 
-// resize reload
+// Resize optimizado - SOLO recarga si el cambio es significativo (cambio de orientación)
 $(function () {
   let initialWidth = $(window).innerWidth();
+  let resizeTimer;
+  
   $(window).on("resize", function () {
-    let newWidth = $(window).innerWidth();
-    if (initialWidth != newWidth) {
-      document.location.reload(true);
-    }
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      let newWidth = $(window).innerWidth();
+      // Solo recarga si el cambio es mayor a 100px (indica cambio de orientación real)
+      if (Math.abs(initialWidth - newWidth) > 100) {
+        initialWidth = newWidth;
+        document.location.reload(true);
+      }
+    }, 250); // Espera 250ms después de que termine el resize
   });
 });
 
 // Manage scroll up button
 $(function () {
-  let ecran =
-    window.innerWidth ||
-    document.documentElement.clientWidth ||
-    document.body.clientWidth;
+  let lastScrollTop = 0;
+  
   $(window).on("scroll", function () {
     let scrollNow = $(window).scrollTop();
-    $(window).on("scroll", function functionName() {
-      if (scrollNow > 600 && scrollNow > $(window).scrollTop()) {
-        if ($("#upArrow").is(":hidden")) {
-          $("#upArrow").show();
-        }
-      } else {
-        $("#upArrow").hide();
-      }
-    });
-    $("#upArrow").on("click", function () {
-      $(window).scrollTop(0);
-    });
+    
+    // Muestra la flecha solo si estás scrolleando hacia arriba y has pasado 600px
+    if (scrollNow > 600 && scrollNow < lastScrollTop) {
+      $("#upArrow").fadeIn(300);
+    } else {
+      $("#upArrow").fadeOut(300);
+    }
+    
+    lastScrollTop = scrollNow;
+  });
+  
+  $("#upArrow").on("click", function () {
+    $("html, body").animate({ scrollTop: 0 }, 600);
   });
 });
 
@@ -312,26 +320,29 @@ $(function () {
   $(window).on("scroll", function () {
     let topPage = $(window).scrollTop();
     if (topPage >= 150) {
-      $("#scrollDown").hide();
+      $("#scrollDown").fadeOut(300);
     } else {
-      $("#scrollDown").show();
+      $("#scrollDown").fadeIn(300);
     }
   });
 });
+
 // Manage tag scroll down
 $(function () {
   $("#scrollDown").on("click", function () {
-    window.location.href = "#nextShow";
+    $("html, body").animate({
+      scrollTop: $("#nextShow").offset().top
+    }, 800);
   });
 });
 
-// Locations
+// Locations - Click en tarjetas de integrantes
 $(function () {
   $(".card").on("click", function (event) {
-    event.stopPropagation(); // previene que otros clics afecten
+    event.stopPropagation();
     const link = $(this).data("link");
     if (link) {
-      window.open(link, "_blank"); // abre en nueva pestaña
+      window.open(link, "_blank");
     }
   });
 });
@@ -347,16 +358,4 @@ $(function () {
     window.location.href = "https://www.instagram.com/";
   });
 });
-
-// Ajustar altura de secciones para móviles
-function ajustarAlturaSecciones() {
-  const altura = window.innerHeight * 0.7 + "px";
-  document.querySelectorAll(".ss-nextShow, .ss-music").forEach(el => {
-    el.style.height = altura;
-  });
-}
-
-// Ejecutar al cargar y al cambiar tamaño
-window.addEventListener("load", ajustarAlturaSecciones);
-window.addEventListener("resize", ajustarAlturaSecciones);
 
