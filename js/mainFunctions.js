@@ -42,11 +42,15 @@ $(function () {
   });
 });
 
-// Parallax effect and gsap
+// Parallax effect - DESACTIVADO en móviles para evitar bugs
 $(function () {
-  if (!window.location.pathname.match("mentions")) {
+  // Solo activar parallax en pantallas grandes (desktop)
+  if (!window.location.pathname.match("mentions") && $(window).width() > 1024) {
     $(".rellax").css("transform", "translateX(-50%)");
     var rellax = new Rellax(".rellax");
+  } else {
+    // En móviles, solo centrar sin parallax
+    $(".rellax").css("transform", "translateX(-50%)");
   }
 });
 
@@ -237,34 +241,44 @@ $(function () {
   });
 });
 
-// Animations on scroll
+// Animations on scroll - Optimizadas para evitar cambios bruscos
 $(function () {
+  // Reducir la frecuencia de comprobación
+  let scrollTimeout;
+  
   $(window).on("scroll", function () {
-    let sizePage = $(window).height();
-    let trigger = 100;
-    // Animation en Y
-    let element = document.getElementsByClassName("animatableY");
-    for (var unit of element) {
-      if (unit.getBoundingClientRect().top + trigger <= sizePage) {
-        unit.classList.add("showed");
-      }
+    if (scrollTimeout) {
+      clearTimeout(scrollTimeout);
     }
+    
+    scrollTimeout = setTimeout(function() {
+      let sizePage = $(window).height();
+      let trigger = 150; // Aumentado de 100 a 150 para activar más temprano
+      
+      // Animation en Y
+      let element = document.getElementsByClassName("animatableY");
+      for (var unit of element) {
+        if (unit.getBoundingClientRect().top + trigger <= sizePage) {
+          unit.classList.add("showed");
+        }
+      }
 
-    // Animation en X
-    let elementh2 = document.getElementsByClassName("animatableX");
-    for (var unit of elementh2) {
-      if (unit.getBoundingClientRect().top + trigger <= sizePage) {
-        unit.classList.add("showed");
+      // Animation en X
+      let elementh2 = document.getElementsByClassName("animatableX");
+      for (var unit of elementh2) {
+        if (unit.getBoundingClientRect().top + trigger <= sizePage) {
+          unit.classList.add("showed");
+        }
       }
-    }
 
-    // Animation opacity
-    let elementOpacity = document.getElementsByClassName("animatableOpacity");
-    for (var unit of elementOpacity) {
-      if (unit.getBoundingClientRect().top + trigger <= sizePage) {
-        unit.classList.add("showed");
+      // Animation opacity
+      let elementOpacity = document.getElementsByClassName("animatableOpacity");
+      for (var unit of elementOpacity) {
+        if (unit.getBoundingClientRect().top + trigger <= sizePage) {
+          unit.classList.add("showed");
+        }
       }
-    }
+    }, 50); // Pequeño debounce de 50ms para suavizar
   });
 });
 
@@ -359,3 +373,5 @@ $(function () {
   });
 });
 
+// ELIMINADO: La función ajustarAlturaSecciones() que causaba el problema
+// El CSS ya maneja correctamente las alturas responsive
