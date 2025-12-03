@@ -17,7 +17,6 @@ $(function () {
     }
   });
 });
-
 $(function () {
   $(".ss-menu").on("click", function () {
     $(".menu").removeClass("active");
@@ -28,7 +27,6 @@ $(function () {
     $(".ss-menu5").removeClass("visible5");
   });
 });
-
 $(function () {
   $(window).on("scroll", function () {
     if ($(".menu").hasClass("active")) {
@@ -42,15 +40,11 @@ $(function () {
   });
 });
 
-// Parallax effect - DESACTIVADO en móviles para evitar bugs
+// Parallax effect and gsap
 $(function () {
-  // Solo activar parallax en pantallas grandes (desktop)
-  if (!window.location.pathname.match("mentions") && $(window).width() > 1024) {
+  if (!window.location.pathname.match("mentions")) {
     $(".rellax").css("transform", "translateX(-50%)");
     var rellax = new Rellax(".rellax");
-  } else {
-    // En móviles, solo centrar sin parallax
-    $(".rellax").css("transform", "translateX(-50%)");
   }
 });
 
@@ -241,44 +235,34 @@ $(function () {
   });
 });
 
-// Animations on scroll - Optimizadas para evitar cambios bruscos
+// Animations on scroll
 $(function () {
-  // Reducir la frecuencia de comprobación
-  let scrollTimeout;
-  
   $(window).on("scroll", function () {
-    if (scrollTimeout) {
-      clearTimeout(scrollTimeout);
+    let sizePage = $(window).height();
+    let trigger = 100;
+    // Animation en Y
+    let element = document.getElementsByClassName("animatableY");
+    for (var unit of element) {
+      if (unit.getBoundingClientRect().top + trigger <= sizePage) {
+        unit.classList.add("showed");
+      }
     }
-    
-    scrollTimeout = setTimeout(function() {
-      let sizePage = $(window).height();
-      let trigger = 150; // Aumentado de 100 a 150 para activar más temprano
-      
-      // Animation en Y
-      let element = document.getElementsByClassName("animatableY");
-      for (var unit of element) {
-        if (unit.getBoundingClientRect().top + trigger <= sizePage) {
-          unit.classList.add("showed");
-        }
-      }
 
-      // Animation en X
-      let elementh2 = document.getElementsByClassName("animatableX");
-      for (var unit of elementh2) {
-        if (unit.getBoundingClientRect().top + trigger <= sizePage) {
-          unit.classList.add("showed");
-        }
+    // Animation en X
+    let elementh2 = document.getElementsByClassName("animatableX");
+    for (var unit of elementh2) {
+      if (unit.getBoundingClientRect().top + trigger <= sizePage) {
+        unit.classList.add("showed");
       }
+    }
 
-      // Animation opacity
-      let elementOpacity = document.getElementsByClassName("animatableOpacity");
-      for (var unit of elementOpacity) {
-        if (unit.getBoundingClientRect().top + trigger <= sizePage) {
-          unit.classList.add("showed");
-        }
+    // Animation opacity
+    let elementOpacity = document.getElementsByClassName("animatableOpacity");
+    for (var unit of elementOpacity) {
+      if (unit.getBoundingClientRect().top + trigger <= sizePage) {
+        unit.classList.add("showed");
       }
-    }, 50); // Pequeño debounce de 50ms para suavizar
+    }
   });
 });
 
@@ -289,43 +273,37 @@ $(function () {
   }
 });
 
-// Resize optimizado - SOLO recarga si el cambio es significativo (cambio de orientación)
+// resize reload
 $(function () {
   let initialWidth = $(window).innerWidth();
-  let resizeTimer;
-  
   $(window).on("resize", function () {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function() {
-      let newWidth = $(window).innerWidth();
-      // Solo recarga si el cambio es mayor a 100px (indica cambio de orientación real)
-      if (Math.abs(initialWidth - newWidth) > 100) {
-        initialWidth = newWidth;
-        document.location.reload(true);
-      }
-    }, 250); // Espera 250ms después de que termine el resize
+    let newWidth = $(window).innerWidth();
+    if (initialWidth != newWidth) {
+      document.location.reload(true);
+    }
   });
 });
 
 // Manage scroll up button
 $(function () {
-  let lastScrollTop = 0;
-  
+  let ecran =
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth;
   $(window).on("scroll", function () {
     let scrollNow = $(window).scrollTop();
-    
-    // Muestra la flecha solo si estás scrolleando hacia arriba y has pasado 600px
-    if (scrollNow > 600 && scrollNow < lastScrollTop) {
-      $("#upArrow").fadeIn(300);
-    } else {
-      $("#upArrow").fadeOut(300);
-    }
-    
-    lastScrollTop = scrollNow;
-  });
-  
-  $("#upArrow").on("click", function () {
-    $("html, body").animate({ scrollTop: 0 }, 600);
+    $(window).on("scroll", function functionName() {
+      if (scrollNow > 600 && scrollNow > $(window).scrollTop()) {
+        if ($("#upArrow").is(":hidden")) {
+          $("#upArrow").show();
+        }
+      } else {
+        $("#upArrow").hide();
+      }
+    });
+    $("#upArrow").on("click", function () {
+      $(window).scrollTop(0);
+    });
   });
 });
 
@@ -334,29 +312,26 @@ $(function () {
   $(window).on("scroll", function () {
     let topPage = $(window).scrollTop();
     if (topPage >= 150) {
-      $("#scrollDown").fadeOut(300);
+      $("#scrollDown").hide();
     } else {
-      $("#scrollDown").fadeIn(300);
+      $("#scrollDown").show();
     }
   });
 });
-
 // Manage tag scroll down
 $(function () {
   $("#scrollDown").on("click", function () {
-    $("html, body").animate({
-      scrollTop: $("#nextShow").offset().top
-    }, 800);
+    window.location.href = "#nextShow";
   });
 });
 
-// Locations - Click en tarjetas de integrantes
+// Locations
 $(function () {
   $(".card").on("click", function (event) {
-    event.stopPropagation();
+    event.stopPropagation(); // previene que otros clics afecten
     const link = $(this).data("link");
     if (link) {
-      window.open(link, "_blank");
+      window.open(link, "_blank"); // abre en nueva pestaña
     }
   });
 });
@@ -373,5 +348,15 @@ $(function () {
   });
 });
 
-// ELIMINADO: La función ajustarAlturaSecciones() que causaba el problema
-// El CSS ya maneja correctamente las alturas responsive
+// Ajustar altura de secciones para móviles
+function ajustarAlturaSecciones() {
+  const altura = window.innerHeight * 0.7 + "px";
+  document.querySelectorAll(".ss-nextShow, .ss-music").forEach(el => {
+    el.style.height = altura;
+  });
+}
+
+// Ejecutar al cargar y al cambiar tamaño
+window.addEventListener("load", ajustarAlturaSecciones);
+window.addEventListener("resize", ajustarAlturaSecciones);
+
