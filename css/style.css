@@ -5,6 +5,7 @@ html {
 .rellax {
   font-size: 50px;
 }
+
 *,
 ::before,
 ::after {
@@ -210,9 +211,14 @@ body {
 }
 
 section {
-  min-height: 80vh;
-  padding: 50px 15% 50px 15%;
+  min-height: auto;
+  padding: 60px 15%;
   background-color: #1a1b1d;
+}
+
+/* Sección nextShow con menos padding */
+section.nextShow {
+  padding: 40px 15%;
 }
 
 .separator {
@@ -274,6 +280,7 @@ h1 {
 
 h2 {
   font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 h2#slogan {
@@ -320,7 +327,7 @@ h2#slogan {
 p {
   color: #9fa0ac;
   line-height: 30px;
-  margin: 50px 0 50px 0;
+  margin: 25px 0;
 }
 
 p.miniPara {
@@ -335,16 +342,16 @@ p.miniPara {
   font-weight: 900;
   text-align: center;
   width: 70%;
-  margin: 70px auto 70px auto;
+  margin: 25px auto;
 }
 
-/* Contenedor principal */
+/* Contenedor principal de integrantes */
 .imgContent {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
-  margin: auto;
+  margin: 30px auto;
 }
 
 /* Cada tarjeta */
@@ -352,16 +359,21 @@ p.miniPara {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 250px; /* ancho tipo tarjeta */
+  width: 250px;
   border-radius: 15px;
   cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.imgContent .integrante:hover {
+  transform: translateY(-5px);
 }
 
 /* Contenedor de imagen */
 .img-wrapper {
   position: relative;
   width: 100%;
-  height: 250px; /* altura tipo tarjeta */
+  height: 250px;
   border-radius: 15px;
   overflow: hidden;
 }
@@ -414,7 +426,7 @@ p.miniPara {
   font-weight: bold;
   font-size: 1.1rem;
   color: #fefefe;
-  margin: 0;
+  margin: 5px 0;
 }
 
 .imgContent .info p.rol {
@@ -430,19 +442,26 @@ p.miniTitle {
   text-align: center;
   color: white;
   width: 100%;
-  margin: 0;
-  margin-bottom: 20px;
+  margin: 0 0 20px 0;
+}
+
+/* Audio Player mejorado */
+.audioPlayer {
+  margin: 30px 0;
 }
 
 .audioPlayer p {
-  margin-top: 5%; /* antes podría ser 20px o más */
-  margin-bottom: 5%;
-  font-size: 2rem; /* opcional, ajusta el tamaño del texto */
+  margin: 30px 0 15px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
 }
 
 .audioPlayer audio {
-  display: block; /* evita que quede inline y genere espacio raro */
-  margin: 0 auto 10px auto; /* ajusta arriba, abajo y centra */
+  display: block;
+  margin: 0 auto 20px auto;
+  width: 100%;
+  max-width: 600px;
 }
 
 p.pink {
@@ -453,6 +472,7 @@ p.pink {
   cursor: pointer;
   transition: all 250ms cubic-bezier(0, 0.69, 0.46, 0.95);
 }
+
 p.pink:hover {
   transform: translateX(5px);
   transition: all 250ms cubic-bezier(0, 0.69, 0.46, 0.95);
@@ -465,7 +485,7 @@ p.pink:hover {
 }
 
 .date table {
-  margin: 50px 0;
+  margin: 30px 0;
   width: 100%;
   border-spacing: 0;
 }
@@ -510,7 +530,8 @@ p.pink:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 70vh;
+  min-height: 30vh;
+  padding: 30px 0;
 }
 
 .ss-music {
@@ -518,7 +539,8 @@ p.pink:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 70vh;
+  min-height: 50vh;
+  padding: 40px 0;
 }
 
 footer {
@@ -533,7 +555,7 @@ footer {
 section.blocNewsletter {
   min-height: inherit;
   text-align: center;
-  padding: 150px 15%;
+  padding: 80px 15%;
   background: url("../img/background-newsletter.jpg");
   background-position: 50% 40%;
   background-size: cover;
@@ -554,6 +576,22 @@ form.newsletterForm input[type="email"] {
   border-radius: 999px 0 0 999px;
 }
 
+form.newsletterForm input[type="button"] {
+  text-transform: uppercase;
+  border: solid #1a1b1d 3px;
+  background-color: white;
+  border-radius: 999px;
+  margin-left: -25px;
+  cursor: pointer;
+  transition: all 250ms cubic-bezier(0, 0.69, 0.46, 0.95);
+}
+
+form.newsletterForm input[type="button"]:hover {
+  transition: all 250ms cubic-bezier(0, 0.69, 0.46, 0.95);
+  color: #f4591e;
+  transform: translateX(5px);
+}
+
 form.newsletterForm label[for="checkRobotNews"] {
   color: #9fa0ac;
 }
@@ -569,34 +607,21 @@ form.newsletterForm #hideNews input {
   background-color: #fefefe;
 }
 
-form.newsletterForm input[type="submit"] {
-  text-transform: uppercase;
-  border: solid #1a1b1d 3px;
-  background-color: white;
-  border-radius: 999px;
-  margin-left: -25px;
-  cursor: pointer;
-  transition: all 250ms cubic-bezier(0, 0.69, 0.46, 0.95);
-}
-form.newsletterForm input[type="submit"]:hover {
-  transition: all 250ms cubic-bezier(0, 0.69, 0.46, 0.95);
-  color: #f4591e;
-  transform: translateX(5px);
-}
-
 .contactForm {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 30px 0;
 }
+
 .contactForm input,
 .contactForm textarea {
   color: #1a1b1d;
   padding: 15px;
   width: 70%;
   border: none;
-  margin: 15px 0 15px 0;
+  margin: 15px 0;
   font-family: inherit;
   outline: none;
 }
@@ -687,11 +712,11 @@ form.newsletterForm input[type="submit"]:hover {
 
 footer {
   text-align: center;
-  padding: 50px 0 50px 0;
+  padding: 40px 20px;
 }
 
 footer p {
-  margin: 10px 0 10px 0;
+  margin: 10px 0;
   color: white;
 }
 
@@ -710,7 +735,7 @@ footer .socialBanner {
 
 footer img {
   max-width: 24px;
-  margin: 0 2px 0 2px;
+  margin: 0 2px;
   cursor: pointer;
 }
 
@@ -718,6 +743,7 @@ footer img {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .footerBaner .bandBanner {
@@ -727,13 +753,20 @@ footer img {
   cursor: default;
   border-radius: 180px;
 }
-/*Listaacanciones*/
+
+/* Lista de canciones mejorada */
+.songsSection {
+  margin: 30px 0;
+}
+
 .songsButtons {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
-  margin: 30px;
+  align-items: center;
+  gap: 15px;
+  margin: 30px auto;
+  max-width: 600px;
 }
 
 .songBtn {
@@ -745,12 +778,16 @@ footer img {
   text-transform: uppercase;
   border-radius: 999px;
   transition: all 0.3s ease-in-out;
+  width: 100%;
+  text-align: center;
+  display: block;
 }
 
 .songBtn:hover {
   background-color: white;
   color: #f4591e;
   transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(244, 89, 30, 0.3);
 }
 
 #upArrow {
@@ -761,6 +798,7 @@ footer img {
   width: 50px;
   height: 50px;
   cursor: pointer;
+  z-index: 100;
 }
 
 #upArrow:hover {
@@ -831,11 +869,20 @@ button[name="backSite"] {
 }
 
 /* =========================
-   MEDIA QUERIES RESPONSIVE
+   MEDIA QUERIES RESPONSIVE MEJORADOS
    ========================= */
 
-/* Para tablets grandes y pantallas medianas */
+/* Tablets grandes */
 @media screen and (max-width: 1024px) {
+  section {
+    padding: 50px 10%;
+  }
+
+  .separator {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
   .menu:hover .line1 {
     transform: scaleX(0.5);
   }
@@ -844,30 +891,17 @@ button[name="backSite"] {
     transform: scaleX(0.75);
   }
 
-  .menu.active .line3 {
-    transform: scaleX(1);
-  }
-
   .imgContent {
-    width: 90%;
-    justify-content: center;
-    gap: 15px;
+    gap: 20px;
   }
 
   .imgContent .integrante {
-    flex: 1 1 48%;
-    max-width: 48%;
+    width: calc(50% - 10px);
+    max-width: 320px;
   }
 
-  .imgContent .img-wrapper {
-    width: 100%;
-    height: auto;
-  }
-
-  .imgContent img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+  .img-wrapper {
+    height: 280px;
   }
 
   form.newsletterForm input[type="email"] {
@@ -876,257 +910,474 @@ button[name="backSite"] {
 
   .contactForm input,
   .contactForm textarea {
-    width: 90%;
-  }
-}
-
-/* Para móviles medianos (menos de 767px) */
-@media screen and (max-width: 767px) {
-  h1 {
-    width: 90%;
-    font-size: 4vh;
-    bottom: 45%;
-  }
-
-  h2#slogan {
-    width: 90%;
-    font-size: 4vh;
-    bottom: 20%;
-  }
-
-  .shareBtn,
-  footer .socialBanner {
-    display: none;
-  }
-
-  section,
-  section.blocNewsletter {
-    padding: 50px 2%;
-  }
-
-  form.newsletterForm input[type="email"] {
-    width: 60%;
+    width: 80%;
   }
 
   .hardLight {
-    width: 100%;
+    width: 85%;
+  }
+}
+
+/* Tablets pequeñas */
+@media screen and (max-width: 768px) {
+  section {
+    padding: 40px 5%;
+    min-height: auto;
+  }
+
+  section.nextShow {
+    padding: 30px 5%;
+  }
+
+  section.blocNewsletter {
+    padding: 60px 5%;
+  }
+
+  h1 {
+    font-size: 5vh;
+    bottom: 25%;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  h2#slogan {
+    font-size: 3.5vh;
+    bottom: 15%;
+  }
+
+  .separator {
+    margin-top: 35px;
+    margin-bottom: 35px;
+    width: 30vw;
+  }
+
+  .hardLight {
+    width: 95%;
+    font-size: 3.5vh;
+    margin: 20px auto;
+  }
+
+  .ss-nextShow,
+  .ss-music {
+    min-height: 20vh;
+    padding: 20px 0;
+  }
+
+  .imgContent {
+    gap: 15px;
+  }
+
+  .imgContent .integrante {
+    width: calc(50% - 10px);
+    max-width: 300px;
+  }
+
+  .img-wrapper {
+    height: 260px;
+  }
+
+  .audioPlayer p {
+    font-size: 1.3rem;
+    margin: 25px 0 12px 0;
+  }
+
+  .songsButtons {
+    gap: 12px;
+    margin: 20px auto;
+  }
+
+  .songBtn {
+    padding: 12px 25px;
+    font-size: 0.9rem;
+  }
+
+  form.newsletterForm input[type="email"] {
+    width: 65%;
+  }
+
+  .contactForm input,
+  .contactForm textarea {
+    width: 90%;
   }
 
   #bandVideo {
     max-width: 100%;
   }
-
-  .contactForm input,
-  .contactForm textarea {
-    width: 90%;
-  }
-
-  .imgContent {
-    width: 100%;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .imgContent .integrante {
-    flex: 1 1 100%;
-    max-width: 40%;
-  }
-
-  .imgContent .img-wrapper {
-    width: 100%;
-    height: auto;
-  }
-
-  .imgContent img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
 }
 
-/* Para móviles pequeños (menos de 430px) */
-@media screen and (max-width: 430px) {
-  h1 {
-    width: 90%;
-    font-size: 4vh;
-    bottom: 40%;
+/* Móviles grandes */
+@media screen and (max-width: 480px) {
+  section {
+    padding: 35px 5%;
   }
 
-  h2#slogan {
-    width: 90%;
-    font-size: 3.8vh;
-    bottom: 15%;
+  section.nextShow {
+    padding: 25px 5%;
   }
 
-  section,
   section.blocNewsletter {
-    padding: 50px 2%;
+    padding: 50px 5%;
   }
 
-  .imgContent {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .imgContent .integrante {
-    flex: 1 1 100%;
-    max-width: 40%;
-  }
-
-  .imgContent img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
-
-  .contactForm input,
-  .contactForm textarea {
-    width: 90%;
-  }
-
-  form.newsletterForm input[type="email"] {
-    width: 90%;
-  }
-}
-
-/* Para móviles muy pequeños (menos de 380px) */
-@media screen and (max-width: 380px) {
   h1 {
-    font-size: 4vh;
-    width: 95%;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 90%;
+    font-size: 4.5vh;
     bottom: 30%;
-    text-align: center;
+  }
+
+  h2 {
+    font-size: 1.6rem;
   }
 
   h2#slogan {
-    font-size: 3.5vh;
-    width: 95%;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 12%;
-    text-align: center;
+    width: 90%;
+    font-size: 3.2vh;
+    bottom: 18%;
   }
 
-  section,
-  section.blocNewsletter {
-    padding: 30px 2%;
+  .separator {
+    width: 40vw;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 
   .hardLight {
-    width: 95%;
-    font-size: 2.5vh;
-    margin: 50px auto;
+    width: 100%;
+    font-size: 3vh;
+    margin: 40px auto;
+   
+  }
+
+  p {
+    margin: 20px 0;
+    line-height: 26px;
+  }
+
+  .ss-nextShow,
+  .ss-music {
+    min-height: 15vh;
+    padding: 15px 0;
   }
 
   .imgContent {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 0 auto;
+    gap: 15px;
   }
 
   .imgContent .integrante {
-    flex: 1 1 100%;
-    max-width: 80%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: calc(50% - 8px);
+    max-width: 240px;
   }
 
-  .imgContent .img-wrapper {
-    width: 90%;
-    height: auto;
+  .img-wrapper {
+    height: 220px;
   }
 
-  .imgContent img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+  .imgContent .info p.nombre {
+    font-size: 0.95rem;
   }
 
-  .contactForm input,
-  .contactForm textarea {
-    width: 90%;
+  .imgContent .info p.rol {
+    font-size: 0.8rem;
+  }
+
+  .audioPlayer p {
+    font-size: 1.2rem;
+    margin: 20px 0 10px 0;
+  }
+
+  .songsButtons {
+    gap: 10px;
+    margin: 20px 10px;
+  }
+
+  .songBtn {
+    padding: 12px 20px;
+    font-size: 0.85rem;
+  }
+
+  p.miniTitle {
+    font-size: 3.5vh;
   }
 
   form.newsletterForm input[type="email"] {
-    width: 90%;
+    width: 70%;
+    padding: 12px;
+  }
+
+  form.newsletterForm input[type="button"] {
+    padding: 12px;
+  }
+
+  .menu,
+  .ss-menu {
+    width: 45px;
+    height: 45px;
+  }
+
+  #upArrow {
+    width: 45px;
+    height: 45px;
   }
 }
 
-/* Para móviles extremadamente pequeños (menos de 350px) */
-@media screen and (max-width: 350px) {
+/* Móviles medianos */
+@media screen and (max-width: 400px) {
+  section {
+    padding: 30px 4%;
+  }
+
+  section.blocNewsletter {
+    padding: 45px 4%;
+  }
+
+  h1 {
+    font-size: 4vh;
+    bottom: 32%;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h2#slogan {
+    font-size: 3vh;
+    bottom: 20%;
+  }
+
+  .separator {
+    width: 50vw;
+    margin-top: 28px;
+    margin-bottom: 28px;
+  }
+
+  .hardLight {
+    font-size: 2.5vh;
+    line-height: 30px;
+    margin: 20px auto;
+  }
+
+  .imgContent .integrante {
+    width: calc(50% - 6px);
+    max-width: 220px;
+  }
+
+  .img-wrapper {
+    height: 200px;
+  }
+
+  .imgContent .info p.nombre {
+    font-size: 0.9rem;
+  }
+
+  .imgContent .info p.rol {
+    font-size: 0.75rem;
+  }
+
+  .audioPlayer p {
+    font-size: 1.1rem;
+  }
+
+  .songBtn {
+    padding: 10px 18px;
+    font-size: 0.8rem;
+  }
+
+  p.miniTitle {
+    font-size: 3.2vh;
+  }
+
+  form.newsletterForm input[type="email"] {
+    width: 75%;
+  }
+
+  .menu,
+  .ss-menu {
+    width: 42px;
+    height: 42px;
+  }
+
+  #upArrow {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* Móviles pequeños */
+@media screen and (max-width: 360px) {
+  section {
+    padding: 25px 3%;
+  }
+
+  section.blocNewsletter {
+    padding: 40px 3%;
+  }
+
   h1 {
     font-size: 3.7vh;
-    width: 90%;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 30%;
-    text-align: center;
+    bottom: 33%;
+  }
+
+  h2 {
+    font-size: 1.4rem;
   }
 
   h2#slogan {
-    font-size: 3vh;
-    bottom: 10%;
+    font-size: 2.8vh;
+    bottom: 22%;
   }
 
-  .hardLight {
-    font-size: 2.2vh;
-    margin: 40px auto;
-  }
-
-  section,
-  section.blocNewsletter {
-    padding: 25px 2%;
-  }
-
-  .imgContent .img-wrapper {
-    width: 85%;
-    height: auto;
-  }
-
-  .imgContent img {
-    width: 100%;
-    height: auto;
-  }
-}
-
-/* Para móviles muy extremos (menos de 320px) */
-@media screen and (max-width: 320px) {
-  h1 {
-    font-size: 3vh;
-    bottom: 25%;
-  }
-
-  h2#slogan {
-    font-size: 2.5vh;
-    bottom: 8%;
+  .separator {
+    width: 55vw;
+    margin-top: 25px;
+    margin-bottom: 25px;
   }
 
   .hardLight {
     font-size: 2vh;
-    margin: 35px auto;
+    line-height: 28px;
+  }
+
+  p {
+    line-height: 24px;
+    margin: 18px 0;
+  }
+
+  .imgContent .integrante {
+    width: calc(50% - 5px);
+    max-width: 200px;
+  }
+
+  .img-wrapper {
+    height: 180px;
+  }
+
+  .imgContent .info p.nombre {
+    font-size: 0.85rem;
+  }
+
+  .imgContent .info p.rol {
+    font-size: 0.7rem;
+  }
+
+  .audioPlayer p {
+    font-size: 1rem;
+    margin: 18px 0 8px 0;
+  }
+
+  .songBtn {
+    padding: 10px 15px;
+    font-size: 0.75rem;
+  }
+
+  p.miniTitle {
+    font-size: 3vh;
+  }
+
+  form.newsletterForm input[type="email"] {
+    width: 80%;
+    padding: 10px;
+  }
+
+  form.newsletterForm input[type="button"] {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Móviles muy pequeños */
+@media screen and (max-width: 320px) {
+  section {
+    padding: 20px 3%;
+  }
+
+  section.blocNewsletter {
+    padding: 35px 3%;
+  }
+
+  h1 {
+    font-size: 3.5vh;
+    bottom: 34%;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  h2#slogan {
+    font-size: 2.6vh;
+    bottom: 24%;
+  }
+
+  .separator {
+    width: 60vw;
+    margin-top: 22px;
+    margin-bottom: 22px;
+  }
+
+  .hardLight {
+    font-size: 1.8vh;
+    line-height: 26px;
+  }
+
+  .imgContent .integrante {
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .img-wrapper {
+    height: 240px;
+  }
+
+  .audioPlayer p {
+    font-size: 0.95rem;
+  }
+
+  .songBtn {
+    padding: 9px 12px;
+    font-size: 0.7rem;
+  }
+
+  p.miniTitle {
+    font-size: 2.8vh;
   }
 
   form.newsletterForm input[type="email"] {
     width: 85%;
   }
 
-  .contactForm input,
-  .contactForm textarea {
-    width: 85%;
+  .menu,
+  .ss-menu {
+    width: 40px;
+    height: 40px;
   }
 
-  .imgContent .img-wrapper {
-    width: 80%;
-    height: auto;
+  #upArrow {
+    width: 40px;
+    height: 40px;
   }
 
-  .imgContent img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+  footer {
+    padding: 30px 15px;
+  }
+
+  .footerBaner .bandBanner {
+    max-width: 80px;
+  }
+}
+
+/* Ajustes adicionales para pantallas muy anchas */
+@media screen and (min-width: 1400px) {
+  section {
+    padding: 80px 20%;
+  }
+
+  .imgContent .integrante {
+    width: 280px;
+  }
+
+  .img-wrapper {
+    height: 280px;
   }
 }
