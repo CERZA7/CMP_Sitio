@@ -27,6 +27,21 @@ $(function () {
     $(".ss-menu5").removeClass("visible5");
   });
 });
+// Función de throttle para optimizar eventos de scroll
+function throttle(func, limit) {
+  let inThrottle;
+  return function() {
+    const args = arguments;
+    const context = this;
+    if (!inThrottle) {
+      func.apply(context, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}
+
+// Cerrar menú en scroll (sin throttle para respuesta inmediata)
 $(function () {
   $(window).on("scroll", function () {
     if ($(".menu").hasClass("active")) {
@@ -84,10 +99,7 @@ $(function () {
   // Phone
   $("#telephone").on("blur input", function () {
     let regexTelephone = /[0]{1}[1-7]{1}[0-9]{8}/;
-    let telEntry = String(document.getElementById("telephone").value);
-    for (var i = 0; i < telEntry.length; i++) {
-      telEntry = telEntry.replace(" ", "");
-    }
+    let telEntry = String(document.getElementById("telephone").value).replace(/\s/g, "");
     if (!telEntry.match(regexTelephone)) {
       $("#helpTel").text("Incorrect phone number").hide().show();
     } else {
@@ -108,7 +120,7 @@ $(function () {
   });
   // Check Robot
   $("#checkRobot").on("blur input", function () {
-    if ($("#checkRobot").val() != 7) {
+    if ($("#checkRobot").val() !== "7") {
       $("#helpRobot").text("Incorrect result of the operation").hide().show();
     } else {
       $("#helpRobot").slideUp(400);
@@ -137,7 +149,7 @@ $(function () {
     let message = $("#message").val();
     let newsletter = $('input[name="newsletter"]:checked').val();
     let checkRobot = $("#checkRobot").val();
-    if ($("#checkRobot").val() == 7) {
+    if ($("#checkRobot").val() === "7") {
       $.post(
         "../datas/sendFormContact.php",
         {
@@ -160,7 +172,7 @@ $(function () {
               "font-size": "1rem",
               "text-align": "center",
             });
-            $("#retourFormulaire").html(data);
+            $("#retourFormulaire").text(data);
           });
           $("#nom").val("");
           $("#telephone").val("");
@@ -193,7 +205,7 @@ $(function () {
     }
   });
   $("#checkRobotNews").on("blur input", function (event) {
-    if ($("#checkRobotNews").val() != 7) {
+    if ($("#checkRobotNews").val() !== "7") {
       $("#helpMailNews").text("Incorrect result").hide().show();
     } else {
       $("#helpMailNews").slideUp(100, function () {});
@@ -207,7 +219,7 @@ $(function () {
     e.preventDefault();
     let mail = $("#emailNews").val();
     let checkRobot = $("#checkRobotNews").val();
-    if ($("#checkRobotNews").val() == 7) {
+    if ($("#checkRobotNews").val() === "7") {
       $.post(
         "../datas/sendFormSubscription.php",
         { mail: mail, checkRobot: checkRobot },
@@ -223,7 +235,7 @@ $(function () {
               "font-size": "1rem",
               "text-align": "center",
             });
-            $("#retourNewsFormulaire").html(data);
+            $("#retourNewsFormulaire").text(data);
           });
           $("#emailNews").val("");
           $("#checkRobotNews").val("");
@@ -235,35 +247,24 @@ $(function () {
   });
 });
 
-// Animations on scroll
+// Animations on scroll (con throttle para mejor rendimiento)
 $(function () {
-  $(window).on("scroll", function () {
-    let sizePage = $(window).height();
-    let trigger = 100;
-    // Animation en Y
-    let element = document.getElementsByClassName("animatableY");
-    for (var unit of element) {
-      if (unit.getBoundingClientRect().top + trigger <= sizePage) {
-        unit.classList.add("showed");
-      }
-    }
+  const handleAnimations = throttle(function () {
+    const sizePage = $(window).height();
+    const trigger = 100;
 
-    // Animation en X
-    let elementh2 = document.getElementsByClassName("animatableX");
-    for (var unit of elementh2) {
+    // Procesar todas las animaciones en un solo loop
+    const animatables = document.querySelectorAll(".animatableY, .animatableX, .animatableOpacity");
+    animatables.forEach(function(unit) {
       if (unit.getBoundingClientRect().top + trigger <= sizePage) {
         unit.classList.add("showed");
       }
-    }
+    });
+  }, 16); // ~60fps
 
-    // Animation opacity
-    let elementOpacity = document.getElementsByClassName("animatableOpacity");
-    for (var unit of elementOpacity) {
-      if (unit.getBoundingClientRect().top + trigger <= sizePage) {
-        unit.classList.add("showed");
-      }
-    }
-  });
+  $(window).on("scroll", handleAnimations);
+  // Ejecutar una vez al cargar para elementos visibles
+  handleAnimations();
 });
 
 //Lazyload
@@ -273,49 +274,38 @@ $(function () {
   }
 });
 
-// resize reload
+// Ya no se recarga la página al cambiar tamaño
+// El parallax y las animaciones se manejan de forma responsiva
+
+// Manejo de scroll UI (upArrow y scrollDown) - consolidado con throttle
 $(function () {
-  let initialWidth = $(window).innerWidth();
-  $(window).on("resize", function () {
-    let newWidth = $(window).innerWidth();
-    if (initialWidth != newWidth) {
-      document.location.reload(true);
+  let lastScrollTop = 0;
+
+  const handleScrollUI = throttle(function () {
+    const scrollNow = $(window).scrollTop();
+
+    // Mostrar flecha cuando scroll > 600 y el usuario está subiendo
+    if (scrollNow > 600 && scrollNow < lastScrollTop) {
+      $("#upArrow").show();
+    } else {
+      $("#upArrow").hide();
     }
-  });
-});
 
-// Manage scroll up button
-$(function () {
-  let ecran =
-    window.innerWidth ||
-    document.documentElement.clientWidth ||
-    document.body.clientWidth;
-  $(window).on("scroll", function () {
-    let scrollNow = $(window).scrollTop();
-    $(window).on("scroll", function functionName() {
-      if (scrollNow > 600 && scrollNow > $(window).scrollTop()) {
-        if ($("#upArrow").is(":hidden")) {
-          $("#upArrow").show();
-        }
-      } else {
-        $("#upArrow").hide();
-      }
-    });
-    $("#upArrow").on("click", function () {
-      $(window).scrollTop(0);
-    });
-  });
-});
-
-// Delete scroll tag on scroll down
-$(function () {
-  $(window).on("scroll", function () {
-    let topPage = $(window).scrollTop();
-    if (topPage >= 150) {
+    // Ocultar indicador de scroll down
+    if (scrollNow >= 150) {
       $("#scrollDown").hide();
     } else {
       $("#scrollDown").show();
     }
+
+    lastScrollTop = scrollNow;
+  }, 100);
+
+  $(window).on("scroll", handleScrollUI);
+
+  // Click handler para subir
+  $("#upArrow").on("click", function () {
+    $("html, body").animate({ scrollTop: 0 }, 400);
   });
 });
 // Manage tag scroll down
