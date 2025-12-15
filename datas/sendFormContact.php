@@ -8,7 +8,7 @@
 
 				// text to send
 				$texte = "Hi there,<br /><br />";
-				$texte = $texte . "Message from < yoursitename >.<br />";
+				$texte = $texte . "Mensaje desde Compañía de Profetas.<br />";
 				$texte = $texte . "The elements entered in the form are as follows :<br />";
 				$texte = $texte . "Name : $nom<br />";
 				$texte = $texte . "Phone number : $telephone<br />";
@@ -20,19 +20,18 @@
 				$texte = stripslashes($texte);
 
 				// Recipient and subject of the message
-				$destinataire = "contact@gmail.com"; // input your email here
-				$objet = "Message from your < site name >"; // input your domain name here
+				$destinataire = "contacto@companiaprofetas.com"; // CAMBIAR: tu email real aquí
+				$objet = "Mensaje desde Compañía de Profetas";
 
 				// Headers
 	      $headers = array(
 	                      'Content-type' => 'text/html',
-	                      'From' => 'form@yourbandname.com', // input your email from here
+	                      'From' => 'noreply@companiaprofetas.com', // CAMBIAR: tu dominio real
 	                      'X-Mailer' => 'PHP/' . phpversion()
 	                  );
 
 				// Send the message then return data to current page with ajax
 				if ($checkRobot == 7) {
-					$conf = ini_set('mail', 'mail.gmail.com'); // update yours informations here
 					$sending_ok = mail($destinataire, $objet, $texte, $headers);
 					if ($sending_ok) {
 							echo "<p class=\"hardLight\">Thanks for your message !<br /><br />We will get back to you very soon.</p>";

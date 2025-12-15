@@ -17,7 +17,6 @@ $(function () {
     }
   });
 });
-
 $(function () {
   $(".ss-menu").on("click", function () {
     $(".menu").removeClass("active");
@@ -28,7 +27,21 @@ $(function () {
     $(".ss-menu5").removeClass("visible5");
   });
 });
+// Función de throttle para optimizar eventos de scroll
+function throttle(func, limit) {
+  let inThrottle;
+  return function() {
+    const args = arguments;
+    const context = this;
+    if (!inThrottle) {
+      func.apply(context, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}
 
+// Cerrar menú en scroll (sin throttle para respuesta inmediata)
 $(function () {
   $(window).on("scroll", function () {
     if ($(".menu").hasClass("active")) {
@@ -42,15 +55,11 @@ $(function () {
   });
 });
 
-// Parallax effect - DESACTIVADO en móviles para evitar bugs
+// Parallax effect and gsap
 $(function () {
-  // Solo activar parallax en pantallas grandes (desktop)
-  if (!window.location.pathname.match("mentions") && $(window).width() > 1024) {
+  if (!window.location.pathname.match("mentions")) {
     $(".rellax").css("transform", "translateX(-50%)");
     var rellax = new Rellax(".rellax");
-  } else {
-    // En móviles, solo centrar sin parallax
-    $(".rellax").css("transform", "translateX(-50%)");
   }
 });
 
@@ -90,10 +99,7 @@ $(function () {
   // Phone
   $("#telephone").on("blur input", function () {
     let regexTelephone = /[0]{1}[1-7]{1}[0-9]{8}/;
-    let telEntry = String(document.getElementById("telephone").value);
-    for (var i = 0; i < telEntry.length; i++) {
-      telEntry = telEntry.replace(" ", "");
-    }
+    let telEntry = String(document.getElementById("telephone").value).replace(/\s/g, "");
     if (!telEntry.match(regexTelephone)) {
       $("#helpTel").text("Incorrect phone number").hide().show();
     } else {
@@ -114,7 +120,7 @@ $(function () {
   });
   // Check Robot
   $("#checkRobot").on("blur input", function () {
-    if ($("#checkRobot").val() != 7) {
+    if ($("#checkRobot").val() !== "7") {
       $("#helpRobot").text("Incorrect result of the operation").hide().show();
     } else {
       $("#helpRobot").slideUp(400);
@@ -143,7 +149,7 @@ $(function () {
     let message = $("#message").val();
     let newsletter = $('input[name="newsletter"]:checked').val();
     let checkRobot = $("#checkRobot").val();
-    if ($("#checkRobot").val() == 7) {
+    if ($("#checkRobot").val() === "7") {
       $.post(
         "../datas/sendFormContact.php",
         {
@@ -166,7 +172,7 @@ $(function () {
               "font-size": "1rem",
               "text-align": "center",
             });
-            $("#retourFormulaire").html(data);
+            $("#retourFormulaire").text(data);
           });
           $("#nom").val("");
           $("#telephone").val("");
@@ -199,7 +205,7 @@ $(function () {
     }
   });
   $("#checkRobotNews").on("blur input", function (event) {
-    if ($("#checkRobotNews").val() != 7) {
+    if ($("#checkRobotNews").val() !== "7") {
       $("#helpMailNews").text("Incorrect result").hide().show();
     } else {
       $("#helpMailNews").slideUp(100, function () {});
@@ -213,7 +219,7 @@ $(function () {
     e.preventDefault();
     let mail = $("#emailNews").val();
     let checkRobot = $("#checkRobotNews").val();
-    if ($("#checkRobotNews").val() == 7) {
+    if ($("#checkRobotNews").val() === "7") {
       $.post(
         "../datas/sendFormSubscription.php",
         { mail: mail, checkRobot: checkRobot },
@@ -229,7 +235,7 @@ $(function () {
               "font-size": "1rem",
               "text-align": "center",
             });
-            $("#retourNewsFormulaire").html(data);
+            $("#retourNewsFormulaire").text(data);
           });
           $("#emailNews").val("");
           $("#checkRobotNews").val("");
@@ -241,45 +247,24 @@ $(function () {
   });
 });
 
-// Animations on scroll - Optimizadas para evitar cambios bruscos
+// Animations on scroll (con throttle para mejor rendimiento)
 $(function () {
-  // Reducir la frecuencia de comprobación
-  let scrollTimeout;
-  
-  $(window).on("scroll", function () {
-    if (scrollTimeout) {
-      clearTimeout(scrollTimeout);
-    }
-    
-    scrollTimeout = setTimeout(function() {
-      let sizePage = $(window).height();
-      let trigger = 150; // Aumentado de 100 a 150 para activar más temprano
-      
-      // Animation en Y
-      let element = document.getElementsByClassName("animatableY");
-      for (var unit of element) {
-        if (unit.getBoundingClientRect().top + trigger <= sizePage) {
-          unit.classList.add("showed");
-        }
-      }
+  const handleAnimations = throttle(function () {
+    const sizePage = $(window).height();
+    const trigger = 100;
 
-      // Animation en X
-      let elementh2 = document.getElementsByClassName("animatableX");
-      for (var unit of elementh2) {
-        if (unit.getBoundingClientRect().top + trigger <= sizePage) {
-          unit.classList.add("showed");
-        }
+    // Procesar todas las animaciones en un solo loop
+    const animatables = document.querySelectorAll(".animatableY, .animatableX, .animatableOpacity");
+    animatables.forEach(function(unit) {
+      if (unit.getBoundingClientRect().top + trigger <= sizePage) {
+        unit.classList.add("showed");
       }
+    });
+  }, 16); // ~60fps
 
-      // Animation opacity
-      let elementOpacity = document.getElementsByClassName("animatableOpacity");
-      for (var unit of elementOpacity) {
-        if (unit.getBoundingClientRect().top + trigger <= sizePage) {
-          unit.classList.add("showed");
-        }
-      }
-    }, 50); // Pequeño debounce de 50ms para suavizar
-  });
+  $(window).on("scroll", handleAnimations);
+  // Ejecutar una vez al cargar para elementos visibles
+  handleAnimations();
 });
 
 //Lazyload
@@ -289,74 +274,54 @@ $(function () {
   }
 });
 
-// Resize optimizado - SOLO recarga si el cambio es significativo (cambio de orientación)
-$(function () {
-  let initialWidth = $(window).innerWidth();
-  let resizeTimer;
-  
-  $(window).on("resize", function () {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function() {
-      let newWidth = $(window).innerWidth();
-      // Solo recarga si el cambio es mayor a 100px (indica cambio de orientación real)
-      if (Math.abs(initialWidth - newWidth) > 100) {
-        initialWidth = newWidth;
-        document.location.reload(true);
-      }
-    }, 250); // Espera 250ms después de que termine el resize
-  });
-});
+// Ya no se recarga la página al cambiar tamaño
+// El parallax y las animaciones se manejan de forma responsiva
 
-// Manage scroll up button
+// Manejo de scroll UI (upArrow y scrollDown) - consolidado con throttle
 $(function () {
   let lastScrollTop = 0;
-  
-  $(window).on("scroll", function () {
-    let scrollNow = $(window).scrollTop();
-    
-    // Muestra la flecha solo si estás scrolleando hacia arriba y has pasado 600px
+
+  const handleScrollUI = throttle(function () {
+    const scrollNow = $(window).scrollTop();
+
+    // Mostrar flecha cuando scroll > 600 y el usuario está subiendo
     if (scrollNow > 600 && scrollNow < lastScrollTop) {
-      $("#upArrow").fadeIn(300);
+      $("#upArrow").show();
     } else {
-      $("#upArrow").fadeOut(300);
+      $("#upArrow").hide();
     }
-    
+
+    // Ocultar indicador de scroll down
+    if (scrollNow >= 150) {
+      $("#scrollDown").hide();
+    } else {
+      $("#scrollDown").show();
+    }
+
     lastScrollTop = scrollNow;
-  });
-  
+  }, 100);
+
+  $(window).on("scroll", handleScrollUI);
+
+  // Click handler para subir
   $("#upArrow").on("click", function () {
-    $("html, body").animate({ scrollTop: 0 }, 600);
+    $("html, body").animate({ scrollTop: 0 }, 400);
   });
 });
-
-// Delete scroll tag on scroll down
-$(function () {
-  $(window).on("scroll", function () {
-    let topPage = $(window).scrollTop();
-    if (topPage >= 150) {
-      $("#scrollDown").fadeOut(300);
-    } else {
-      $("#scrollDown").fadeIn(300);
-    }
-  });
-});
-
 // Manage tag scroll down
 $(function () {
   $("#scrollDown").on("click", function () {
-    $("html, body").animate({
-      scrollTop: $("#nextShow").offset().top
-    }, 800);
+    window.location.href = "#nextShow";
   });
 });
 
-// Locations - Click en tarjetas de integrantes
+// Locations
 $(function () {
   $(".card").on("click", function (event) {
-    event.stopPropagation();
+    event.stopPropagation(); // previene que otros clics afecten
     const link = $(this).data("link");
     if (link) {
-      window.open(link, "_blank");
+      window.open(link, "_blank"); // abre en nueva pestaña
     }
   });
 });
@@ -373,5 +338,15 @@ $(function () {
   });
 });
 
-// ELIMINADO: La función ajustarAlturaSecciones() que causaba el problema
-// El CSS ya maneja correctamente las alturas responsive
+// Ajustar altura de secciones para móviles
+function ajustarAlturaSecciones() {
+  const altura = window.innerHeight * 0.7 + "px";
+  document.querySelectorAll(".ss-nextShow, .ss-music").forEach(el => {
+    el.style.height = altura;
+  });
+}
+
+// Ejecutar al cargar y al cambiar tamaño
+window.addEventListener("load", ajustarAlturaSecciones);
+window.addEventListener("resize", ajustarAlturaSecciones);
+
